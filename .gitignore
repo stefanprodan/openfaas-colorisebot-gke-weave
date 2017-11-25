@@ -21,3 +21,5 @@ account.json
 # OpenFaaS CLI build
 build/
 credentials.yml
+credentials.yaml
+up.sh
