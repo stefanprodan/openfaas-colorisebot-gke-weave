@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: mailbox
+  namespace: openfaas-fn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailbox
+  template:
+    metadata:
+      labels:
+        app: mailbox
+    spec:
+      containers:
+      - name:  mailbox
+        image: alexellis2/mailbox:codes2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8080
+          protocol: TCP
+        env:
+        - name: gateway_url
+          value: "http://gateway.openfaas:8080/"
+        resources:
+          limits:
+            memory: 128Mi
+

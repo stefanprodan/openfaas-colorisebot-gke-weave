@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: tweetlistener
+  namespace: openfaas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tweetlistener
+  template:
+    metadata:
+      labels:
+        app: tweetlistener
+    spec:
+      containers:
+      - name:  tweetlistener
+        image: alexellis2/tweetlistener:0.2.1
+        imagePullPolicy: Always
+        env:
+        - name: gateway_hostname
+          value: "gateway.openfaas"
+        - name: twitter_account
+          value: "@sp_one_bot"
+        - name: minio_hostname
+          value: "minio.openfaas-fn:9000"
+        - name: minio_access_key
+          valueFrom:
+            secretKeyRef:
+              name: minio-auth
+              key: key
+        - name: minio_secret_key
+          valueFrom:
+            secretKeyRef:
+              name: minio-auth
+              key: secret
+        - name: consumer_key
+          valueFrom:
+            secretKeyRef:
+              name: twitter-auth
+              key: consumer_key
+        - name: consumer_secret
+          valueFrom:
+            secretKeyRef:
+              name: twitter-auth
+              key: consumer_secret
+        - name: access_token
+          valueFrom:
+            secretKeyRef:
+              name: twitter-auth
+              key: access_token
+        - name: access_token_secret
+          valueFrom:
+            secretKeyRef:
+              name: twitter-auth
+              key: access_token_secret
+        resources:
+          limits:
+            memory: 128Mi
