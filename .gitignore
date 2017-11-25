@@ -12,3 +12,12 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+.idea
+.DS_Store
+
+# GCP key
+account.json
+
+# OpenFaaS CLI build
+build/
+credentials.yml
