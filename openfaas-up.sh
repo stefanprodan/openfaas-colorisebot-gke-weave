@@ -5,20 +5,20 @@ set -o pipefail
 set -o nounset
 
 get_gateway_ip() {
-    kubectl -n openfaas describe service gateway-lb | grep Ingress | awk '{ print $NF }'
+    kubectl -n openfaas describe service caddy-lb | grep Ingress | awk '{ print $NF }'
 }
 
 get_minio_ip() {
     kubectl -n openfaas-fn describe service minio-lb | grep Ingress | awk '{ print $NF }'
 }
 
-if [ -z "$minio_access_key" ]; then
- echo "minio_access_key is required"
+if [ -z "$basic_auth_user" ]; then
+ echo "basic_auth_user is required"
  exit 1
 fi
 
-if [ -z "$twitter_consumer_key" ]; then
- echo "twitter_consumer_key is required"
+if [ -z "$minio_access_key" ]; then
+ echo "minio_access_key is required"
  exit 1
 fi
 
@@ -27,11 +27,22 @@ if [ -z "$twitter_account" ]; then
  exit 1
 fi
 
+if [ -z "$twitter_consumer_key" ]; then
+ echo "twitter_consumer_key is required"
+ exit 1
+fi
+
+
+
 # create namespaces
 
-twitter_account=${twitter_account} kubectl apply -f ./namespaces.yaml
+kubectl apply -f ./namespaces.yaml
 
-# create Minio and Twitter secrets
+# create Caddy, Minio and Twitter secrets
+
+kubectl -n openfaas create secret generic basic-auth \
+    --from-literal=user=${basic_auth_user} \
+    --from-literal=password=${basic_auth_password}
 
 kubectl -n openfaas create secret generic minio-auth \
     --from-literal=key=${minio_access_key} \
@@ -73,7 +84,7 @@ echo "."
 gateway_ip=$(get_gateway_ip)
 mino_ip=$(get_minio_ip)
 
-echo "Gateway IP: ${gateway_ip}"
+echo "OpenFaaS Gateway IP: ${gateway_ip}"
 echo "Minio External IP: ${mino_ip}"
 
 # create Minio colorization bucket
@@ -83,4 +94,5 @@ mc mb gcp/colorization
 
 # deploy colorisebot functions
 
-faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}:8080
+echo ${basic_auth_password} | faas-cli login -u ${basic_auth_user} --password-stdin --gateway=http://${gateway_ip}
+faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
