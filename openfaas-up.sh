@@ -121,3 +121,12 @@ fi
 
 echo ${basic_auth_password} | faas-cli login -u ${basic_auth_user} --password-stdin --gateway=http://${gateway_ip}
 faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
+
+sleep 5
+
+# scale to one pod per CPU
+kubectl -n openfaas-fn scale --replicas=3 deployment/colorization
+
+# disable Prometheus scraping for functions (this is must or the functions will OOM)
+kubectl -n openfaas-fn annotate services --all prometheus.io.scrape='false'
+kubectl -n openfaas-fn annotate pods --all prometheus.io.scrape='false'

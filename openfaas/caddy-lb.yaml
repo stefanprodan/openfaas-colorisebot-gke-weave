@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: caddy-lb
   namespace: openfaas
+  annotations:
+    prometheus.io.scrape: 'false'
   labels:
     app: caddy
 spec:

@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: faas-netesd
   namespace: openfaas
+  annotations:
+    prometheus.io.scrape: 'false'
   labels:
     app: faas-netesd
 spec:

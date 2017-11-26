@@ -4,6 +4,8 @@ kind: Service
 metadata:
   name: alertmanager
   namespace: openfaas
+  annotations:
+    prometheus.io.scrape: 'false'
   labels:
     app: alertmanager
 spec:
