@@ -23,6 +23,8 @@ spec:
           value: "gateway.openfaas"
         - name: faas_nats_address
           value: "nats.openfaas"
+        - name: early_ack
+          value: "true"
         - name: faas_print_body
           value: "true"
         resources:

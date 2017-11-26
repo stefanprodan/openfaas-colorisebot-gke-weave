@@ -11,7 +11,7 @@ gcloud container clusters create demo \
     --zone=europe-west3-a \
     --additional-zones=europe-west3-b,europe-west3-c \
     --num-nodes=1 \
-    --machine-type=n1-standard-1 \
+    --machine-type=n1-highmem-2 \
     --scopes=default,storage-rw
 
 gcloud container clusters get-credentials demo
