@@ -3,6 +3,10 @@ provider:
   gateway: http://localhost:8080
 
 functions:
+  normalisecolor:
+    lang: Dockerfile
+    handler: ./normalisecolor
+    image: alexellis2/normalisecolor:0.2
   colorization:
     lang: Dockerfile
     handler: ./colorise
@@ -11,12 +15,10 @@ functions:
       read_timeout: 60
       write_timeout: 60
       write_debug: true
+      minio_authority: minio.openfaas-fn:9000
+      gateway_url: http://gateway.openfaas:8080
     environment_file:
       - credentials.yaml
-  normalisecolor:
-    lang: Dockerfile
-    handler: ./normalisecolor
-    image: alexellis2/normalisecolor:0.2
   tweetpic:
     lang: Dockerfile
     handler: ./tweetpic
@@ -24,5 +26,7 @@ functions:
     environment:
       read_timeout: 60
       write_timeout: 60
+      minio_authority: minio.openfaas-fn:9000
+      gateway_url: http://gateway.openfaas:8080
     environment_file:
       - credentials.yaml

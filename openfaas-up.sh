@@ -32,6 +32,15 @@ if [ -z "$twitter_consumer_key" ]; then
  exit 1
 fi
 
+if [ -z "$weave_token" ]; then
+ echo "weave_token is required"
+ exit 1
+fi
+
+# install Weave Cloud agents
+
+kubectl apply -n kube-system -f \
+"https://cloud.weave.works/k8s.yaml?k8s-version=$(kubectl version | base64 | tr -d '\n')&t=${weave_token}"
 
 
 # create namespaces
@@ -91,6 +100,22 @@ echo "Minio External IP: ${mino_ip}"
 
 mc config host add gcp http://${mino_ip}:9000 ${minio_access_key} ${minio_secret_key}
 mc mb gcp/colorization
+
+# create credentials file
+
+if [ ! -f ./credentials.yaml ]; then
+  echo -e "\nGenerating credentials.yaml"
+
+  cat > ./credentials.yaml <<EOL
+environment:
+  minio_access_key: ${minio_access_key}
+  minio_secret_key: ${minio_secret_key}
+  consumer_key: ${twitter_consumer_key}
+  consumer_secret: ${twitter_consumer_secret}
+  access_token: ${twitter_access_token}
+  access_token_secret: ${twitter_access_token_secret}
+EOL
+fi
 
 # deploy colorisebot functions
 
