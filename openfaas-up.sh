@@ -42,6 +42,7 @@ kubectl -n openfaas-fn create secret generic minio-auth \
     --from-literal=secret=${minio_secret_key}
 
 kubectl -n openfaas create secret generic twitter-auth \
+    --from-literal=account=${twitter_account} \
     --from-literal=consumer_key=${twitter_consumer_key} \
     --from-literal=consumer_secret=${twitter_consumer_secret} \
     --from-literal=access_token=${twitter_access_token} \
