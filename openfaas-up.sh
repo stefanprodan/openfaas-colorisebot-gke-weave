@@ -124,8 +124,12 @@ faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
 
 sleep 5
 
-# scale to one pod per CPU
-kubectl -n openfaas-fn scale --replicas=3 deployment/colorization
+# scale to one pod per node
+kubectl -n openfaas-fn scale --replicas=4 deployment/colorization
+kubectl -n openfaas-fn scale --replicas=4 deployment/normalisecolor
+
+# scale to one pod per CPU core
+kubectl -n openfaas-fn scale --replicas=16 deployment/queue-worker
 
 # disable Prometheus scraping for functions (this is must or the functions will OOM)
 kubectl -n openfaas-fn annotate services --all prometheus.io.scrape='false'
