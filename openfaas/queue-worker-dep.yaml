@@ -5,7 +5,7 @@ metadata:
   name: queue-worker
   namespace: openfaas-fn
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: queue-worker
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name:  queue-worker
-        image: functions/queue-worker:0.3.1-debug
+        image: functions/queue-worker:0.3.2-rc1
         imagePullPolicy: Always
         env:
         - name: faas_function_suffix
@@ -27,6 +27,10 @@ spec:
           value: "nats.openfaas"
         - name: early_ack
           value: "true"
+        - name: ack_wait
+          value: "120s"
+        - name: max_inflight
+          value: "1"
         - name: faas_print_body
           value: "true"
         resources:
