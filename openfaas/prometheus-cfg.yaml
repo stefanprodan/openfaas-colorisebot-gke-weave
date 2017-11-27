@@ -31,7 +31,7 @@ data:
     ALERT service_down
       IF up == 0
     ALERT APIHighInvocationRate
-      IF sum ( rate(gateway_function_invocation_total{code="200"}[10s]) ) by (function_name) > 5
+      IF sum ( rate(gateway_function_invocation_total{code="200"}[10s]) ) by (function_name) > 5000
       FOR 5s
       LABELS {
         service = "gateway",
