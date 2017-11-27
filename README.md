@@ -14,13 +14,13 @@ Prerequisites:
 
 Run `gcloud init` and set the the default zone to `europe-west3-a`.
 
-Create a GKE 3 nodes cluster:
+Create the GKE cluster:
 
 ```bash
 ./cluster-up.sh
 ```
 
-Deploy OpenFaaS services, Caddy, Nats, Minio, Colorisebot services and functions, Weave Cloud agents:
+Deploy OpenFaaS services, Weave Cloud agents, Caddy, Nats, Minio, Colorisebot services and functions:
 
 ```bash
 basic_auth_user=<VAL> \
@@ -42,36 +42,26 @@ Namespace openfaas:
 
 ```bash
 $ kubectl -n openfaas get deployments
-NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-alertmanager    1         1         1            1           16m
-caddy           1         1         1            1           16m
-faas-netesd     1         1         1            1           16m
-gateway         1         1         1            1           16m
-nats            1         1         1            1           16m
-prometheus      1         1         1            1           16m
-tweetlistener   1         1         1            1           15m
+  NAME            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+  alertmanager    1         1         1            1           3h
+  caddy           1         1         1            1           3h
+  faas-netesd     1         1         1            1           3h
+  gateway         1         1         1            1           3h
+  nats            1         1         1            1           3h
+  prometheus      1         1         1            1           3h
+  tweetlistener   1         1         1            1           3h
 ```
 
 Namespace openfaas-fn:
 
 ```bash
 $ kubectl -n openfaas-fn get deployments
-NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-colorization     1         1         1            1           14m
-mailbox          1         1         1            1           16m
-minio            1         1         1            1           16m
-normalisecolor   1         1         1            1           15m
-queue-worker     1         1         1            1           16m
-tweetpic         1         1         1            1           14m
+  NAME             DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+  colorization     4         4         4            4           3h
+  mailbox          1         1         1            1           3h
+  minio            1         1         1            1           3h
+  normalisecolor   4         4         4            4           3h
+  queue-worker     16        16        16           16          3h
+  tweetpic         1         1         1            1           3h
 ```
 
-Namespace kube-system:
-
-```bash
-$ kubectl -n kube-system get deployments | grep weave
-NAME                         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-weave-cortex-agent           1         1         1            1           25m
-weave-cortex-state-metrics   1         1         1            1           25m
-weave-flux-agent             1         1         1            1           25m
-weave-flux-memcached         1         1         1            1           25m
-```
