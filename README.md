@@ -12,7 +12,7 @@ Prerequisites:
 * faas-cli
 * jq, awk, base64
 
-Run `gcloud init` and set the the default zone to `europe-west3-a`.
+Run `gcloud init` and set the default zone to `europe-west1-d`.
 
 Create the GKE cluster:
 
