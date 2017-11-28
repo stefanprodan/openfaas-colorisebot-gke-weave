@@ -38,17 +38,14 @@ if [ -z "$weave_token" ]; then
 fi
 
 # install Weave Cloud agents
-
 kubectl apply -n kube-system -f \
 "https://cloud.weave.works/k8s.yaml?k8s-version=$(kubectl version | base64 | tr -d '\n')&t=${weave_token}"
 
 
 # create namespaces
-
 kubectl apply -f ./namespaces.yaml
 
 # create Caddy, Minio and Twitter secrets
-
 kubectl -n openfaas create secret generic basic-auth \
     --from-literal=user=${basic_auth_user} \
     --from-literal=password=${basic_auth_password}
@@ -69,15 +66,12 @@ kubectl -n openfaas create secret generic twitter-auth \
     --from-literal=access_token_secret=${twitter_access_token_secret}
 
 # deploy OpenFaaS core services
-
 kubectl apply -f ./openfaas
 
 # deploy Minio and Mailbox services
-
 kubectl apply -f ./openfaas-fn
 
 # print Gateway and Minio public IPs
-
 until [[ "$(get_gateway_ip)" ]]
  do sleep 1;
  echo -n ".";
@@ -102,7 +96,6 @@ mc config host add gcp http://${mino_ip}:9000 ${minio_access_key} ${minio_secret
 mc mb gcp/colorization
 
 # create credentials file
-
 if [ ! -f ./credentials.yaml ]; then
   echo -e "\nGenerating credentials.yaml"
 
@@ -118,7 +111,6 @@ EOL
 fi
 
 # deploy colorisebot functions
-
 echo ${basic_auth_password} | faas-cli login -u ${basic_auth_user} --password-stdin --gateway=http://${gateway_ip}
 faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
 
@@ -130,7 +122,3 @@ kubectl -n openfaas-fn scale --replicas=4 deployment/normalisecolor
 
 # scale to one pod per CPU core
 kubectl -n openfaas-fn scale --replicas=16 deployment/queue-worker
-
-# disable Prometheus scraping for functions (this is must or the functions will OOM)
-kubectl -n openfaas-fn annotate services --all prometheus.io.scrape='false'
-kubectl -n openfaas-fn annotate pods --all prometheus.io.scrape='false'
