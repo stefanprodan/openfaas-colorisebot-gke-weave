@@ -94,6 +94,8 @@ echo "Minio External IP: ${mino_ip}"
 
 mc config host add gcp http://${mino_ip}:9000 ${minio_access_key} ${minio_secret_key}
 mc mb gcp/colorization
+mc mb gcp/inbox
+mc mb gcp/outbox
 
 # create credentials file
 if [ ! -f ./credentials.yaml ]; then

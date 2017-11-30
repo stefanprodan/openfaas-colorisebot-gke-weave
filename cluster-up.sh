@@ -10,12 +10,14 @@ echo "Using Kubernetes ${k8s_version}"
 gcloud beta container clusters create demo \
     --cluster-version=${k8s_version} \
     --zone=europe-west1-d \
-    --num-nodes=5 \
-    --machine-type=n1-standard-4 \
+    --num-nodes=4 \
+    --machine-type=n1-highcpu-4 \
     --min-cpu-platform="Intel Skylake" \
     --scopes=default,storage-rw
 
-gcloud container clusters get-credentials demo
+gcloud compute disks create --size 10GB minio-disk
+
+gcloud container clusters get-credentials demo --zone=europe-west1-d
 
 kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
     --clusterrole=cluster-admin \
