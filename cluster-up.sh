@@ -4,20 +4,24 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
+k8s_zone=europe-west2-a
+k8s_zone_extra=europe-west2-b
 k8s_version=$(gcloud container get-server-config --format=json | jq -r '.validNodeVersions[0]')
 echo "Using Kubernetes ${k8s_version}"
 
-gcloud beta container clusters create demo \
+gcloud container clusters create demo \
     --cluster-version=${k8s_version} \
-    --zone=europe-west1-d \
-    --num-nodes=4 \
+    --zone=${k8s_zone} \
+    --additional-zones=${k8s_zone_extra} \
+    --num-nodes=2 \
     --machine-type=n1-highcpu-4 \
-    --min-cpu-platform="Intel Skylake" \
     --scopes=default,storage-rw
 
-gcloud compute disks create --size 10GB minio-disk
+    #    --min-cpu-platform="Intel Skylake" \
 
-gcloud container clusters get-credentials demo --zone=europe-west1-d
+gcloud compute disks create --size 10GB minio-disk --type=pd-ssd --zone=${k8s_zone}
+
+gcloud container clusters get-credentials demo --zone=${k8s_zone}
 
 kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
     --clusterrole=cluster-admin \

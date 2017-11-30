@@ -41,7 +41,6 @@ fi
 kubectl apply -n kube-system -f \
 "https://cloud.weave.works/k8s.yaml?k8s-version=$(kubectl version | base64 | tr -d '\n')&t=${weave_token}"
 
-
 # create namespaces
 kubectl apply -f ./namespaces.yaml
 
@@ -116,7 +115,7 @@ fi
 echo ${basic_auth_password} | faas-cli login -u ${basic_auth_user} --password-stdin --gateway=http://${gateway_ip}
 faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
 
-sleep 5
+sleep 2
 
 # scale to one pod per node
 kubectl -n openfaas-fn scale --replicas=4 deployment/colorization
@@ -124,3 +123,9 @@ kubectl -n openfaas-fn scale --replicas=4 deployment/normalisecolor
 
 # scale to one pod per CPU core
 kubectl -n openfaas-fn scale --replicas=16 deployment/queue-worker
+
+sleep 1
+
+# disable Prometheus scraping for openfaas-fn
+kubectl -n openfaas-fn annotate services --all prometheus.io.scrape='false'
+kubectl -n openfaas-fn annotate pods --all prometheus.io.scrape='false'
