@@ -5,7 +5,7 @@ metadata:
   name: queue-worker
   namespace: openfaas-fn
 spec:
-  replicas: 1
+  replicas: 14
   selector:
     matchLabels:
       app: queue-worker
