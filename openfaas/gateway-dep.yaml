@@ -2,8 +2,6 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  annotations:
-    flux.weave.works/automated: "true"
   name: gateway
   namespace: openfaas
 spec:
