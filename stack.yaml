@@ -7,10 +7,14 @@ functions:
     lang: Dockerfile
     handler: ./normalisecolor
     image: alexellis2/normalisecolor:0.2
+    labels:
+      com.openfaas.scale.min: "4"
   colorization:
     lang: Dockerfile
     handler: ./colorise
     image: alexellis2/openfaas-colorization:0.2.2
+    labels:
+      com.openfaas.scale.min: "4"
     environment:
       read_timeout: 60
       write_timeout: 60
