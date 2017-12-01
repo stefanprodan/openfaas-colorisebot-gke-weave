@@ -1,0 +1,1 @@
+{"jobID":"fc14651b-b6cc-b892-6055-a42040e0dab1","spec":{"type":"policy","cause":{"Message":"","User":"stefan \u003cstefan@weave.works\u003e"},"spec":{"openfaas:deployment/alertmanager":{"add":{"locked":"true"},"remove":null}}},"result":null}
