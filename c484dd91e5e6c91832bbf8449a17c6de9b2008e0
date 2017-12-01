@@ -1,0 +1,1 @@
+{"jobID":"84fd52e6-cf7c-fb98-93ec-06b817fc6c96","spec":{"type":"policy","cause":{"Message":"","User":"stefan \u003cstefan@weave.works\u003e"},"spec":{"openfaas:deployment/gateway":{"add":{"automated":"true"},"remove":null}}},"result":null}
