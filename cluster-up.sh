@@ -14,7 +14,7 @@ gcloud container clusters create demo \
     --zone=${k8s_zone} \
     --additional-zones=${k8s_zone_extra} \
     --num-nodes=2 \
-    --machine-type=n1-highcpu-4 \
+    --machine-type=n1-standard-4 \
     --scopes=default,storage-rw
 
     #    --min-cpu-platform="Intel Skylake" \

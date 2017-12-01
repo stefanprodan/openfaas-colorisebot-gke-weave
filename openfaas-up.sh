@@ -111,6 +111,8 @@ environment:
 EOL
 fi
 
+sleep 2
+
 # deploy colorisebot functions
 echo ${basic_auth_password} | faas-cli login -u ${basic_auth_user} --password-stdin --gateway=http://${gateway_ip}
 faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
@@ -118,13 +120,12 @@ faas-cli deploy -f ./stack.yaml --gateway=http://${gateway_ip}
 sleep 2
 
 # scale to one pod per node
-kubectl -n openfaas-fn scale --replicas=4 deployment/colorization
-kubectl -n openfaas-fn scale --replicas=4 deployment/normalisecolor
+#kubectl -n openfaas-fn scale --replicas=6 deployment/colorization
+#kubectl -n openfaas-fn scale --replicas=6 deployment/normalisecolor
 
-# scale to one pod per CPU core
-kubectl -n openfaas-fn scale --replicas=16 deployment/queue-worker
+#sleep 1
 
-sleep 1
+kubectl -n openfaas scale --replicas=0 deployment/alertmanager
 
 # disable Prometheus scraping for openfaas-fn
 kubectl -n openfaas-fn annotate services --all prometheus.io.scrape='false'
