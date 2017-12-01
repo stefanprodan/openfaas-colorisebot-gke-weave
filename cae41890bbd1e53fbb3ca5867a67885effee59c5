@@ -1,0 +1,1 @@
+{"jobID":"16faaa06-97f2-2df1-e4c5-daad9a2f0218","spec":{"type":"policy","cause":{"Message":"","User":"stefan \u003cstefan@weave.works\u003e"},"spec":{"openfaas-fn:deployment/minio":{"add":{"locked":"true"},"remove":null}}},"result":null}
