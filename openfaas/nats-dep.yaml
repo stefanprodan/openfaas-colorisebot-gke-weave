@@ -2,6 +2,8 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
+  annotations:
+    flux.weave.works/locked: "true"
   name: nats
   namespace: openfaas
 spec:
