@@ -1,0 +1,1 @@
+{"jobID":"f191f419-0216-38df-2c3e-17afb25ca17a","spec":{"type":"policy","cause":{"Message":"","User":"stefan \u003cstefan@weave.works\u003e"},"spec":{"openfaas:deployment/prometheus":{"add":{"locked":"true"},"remove":null}}},"result":null}
